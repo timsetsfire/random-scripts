@@ -633,19 +633,17 @@ model_migration_identification['migration_information'] = {
                 df_migrated_holdout_predictions)
         }
 
+logger.info("Registering migrated model in destination DataRobot environment")
 registered_model = dr.RegisteredModelVersion.create_for_leaderboard_item(model_id = migrated_model.id)
-registered_model.id
-registered_model.registered_model_id
-
-
 dst_dict["registered_model_id"] = registered_model.registered_model_id
 dst_dict["registered_model_version_id"] = registered_model.id
 dst_dict["usecase_id"] = dst_usecase.id
 dst_dict["project_id"] = migrated_project.id
 dst_dict["model_id"] = migrated_model.id
+logger.info(f"Registeration is complete.  you can review the details at {args.dst_dr_yaml}")
 
 with open(args.dst_dr_yaml, 'w') as f:
-    yaml.dump(dst_dict, f)
+    yaml.dump(dict(dst_dict), f)
 
 # with open("model_promption_info.json", 'w') as f:
 #     json.dump(model_migration_identification, f)
